@@ -1,0 +1,48 @@
+\begin{table}\caption{Regression Results - Learning Gain = 0.01, Lag Length = 1}\label{tb:ARDL_1lags_0.01gain}\scriptsize{
+\begin{center}\begin{tabular}{l|S[table-format=3.2] S[table-format=3.2] S[table-format=3.2] S[table-format=3.2] S[table-format=3.2] S[table-format=3.2]}
+ & \multicolumn{1}{p{0.6in}}{\vspace*{-1.5pc}\begin{center}~\newline Real GDP\end{center}} 
+                & \multicolumn{1}{p{0.6in}}{\vspace*{-1.5pc}\begin{center}Consumption\end{center}} 
+                & \multicolumn{1}{p{0.6in}}{\vspace*{-1.5pc}\begin{center}~\newline Investment\end{center}} 
+                & \multicolumn{1}{p{0.6in}}{\vspace*{-1.5pc}\begin{center}Employment\end{center}}
+                & \multicolumn{1}{p{0.6in}}{\vspace*{-1.5pc}\begin{center}Unemployment\end{center}} 
+                & \multicolumn{1}{p{0.6in}}{\vspace*{-1.5pc}\begin{center}~\newline Inflation\end{center}} \\ [-0.75pc] \hline
+ & \multicolumn{6}{c}{} \\ [-0.25pc]
+Fiscal Uncertainty Coefficients$^1$~~ & \multicolumn{6}{c}{} \\ [0.5pc]
+~~~Government Expenditures & -0.05 & 0.12* & -0.15*** & 0.01 & 0.24 & -0.21 \\
+~~~(Standard Error) & (0.09) & (0.07) & (0.05) & (0.56) & (0.18) & (0.20) \\ [0.2pc]
+~~~Tax Receipts & 0.20** & 0.05 & 0.22*** & 0.38 & -0.15 & -0.04 \\
+~~~(Standard Error) & (0.09) & (0.06) & (0.05) & (0.37) & (0.13) & (0.14) \\ [0.2pc]
+~~~Transfer Payments & 0.12*** & 0.03 & 0.07** & -0.20 & -0.03 & 0.11 \\
+~~~(Standard Error) & (0.04) & (0.02) & (0.03) & (0.27) & (0.05) & (0.11) \\ [0.2pc]
+~~~Government Debt & 0.05 & -0.00 & 0.14** & -1.74*** & 0.42** & 0.57*** \\
+~~~(Standard Error) & (0.09) & (0.06) & (0.07) & (0.42) & (0.19) & (0.18) \\ [0.2pc]
+~~~Coincident Index & -0.43*** & -0.20*** & -0.29*** & -0.03 & -0.15 & -0.21** \\
+~~~(Standard Error) & (0.11) & (0.05) & (0.09) & (0.73) & (0.12) & (0.10) \\ [0.2pc]
+\hline
+ & \multicolumn{6}{c}{} \\ [-0.25pc]
+Fiscal Uncertainty Joint Wald$^2$~~ & 4.51*** & 4.17*** & 6.44*** & 6.32*** & 4.16*** & 2.89** \\ [0.5pc] \hline
+ & \multicolumn{6}{c}{} \\ [-0.25pc]
+Wald Tests for Controls$^3$ & \multicolumn{6}{c}{} \\ [0.5pc]
+~~~Real GDP & 15.31*** & 14.94*** & 10.47*** & 0.00 & 1.54 & 4.00** \\
+~~~Consumption & 4.73** & 170.61*** & 0.17 & 0.34 & 1.79 & 0.73 \\
+~~~Investment & 2.61 & 448.44*** & 7.98*** & 0.53 & 0.03 & 0.25 \\
+~~~Employment & 6.68** & 1.47 & 141.10*** & 2.15 & 7.98*** & 1.31 \\
+~~~Unemployment & 2.64 & 9.04*** & 1.26 & 0.17 & 2.94* & 75.12*** \\
+~~~Inflation & 1.51 & 0.23 & 2.85* & 0.20 & 0.09 & 0.92 \\
+~~~Government Expenditures & 0.94 & 8.10*** & 1.98 & 0.11 & 6.28** & 0.06 \\
+~~~Transfer Payments & 0.87 & 1.19 & 0.26 & 1.12 & 3.46* & 1.20 \\
+~~~Tax Receipts & 3.62* & 9.05*** & 7.19*** & 0.75 & 14.24*** & 15.29*** \\
+
+
+\hline
+ & \multicolumn{6}{c}{} \\ [-0.25pc]
+Fit Statistics: & \multicolumn{6}{c}{} \\ [0.5pc]
+~~~Adjusted R-square & 0.24 & 0.98 & 0.95 & 0.85 & 0.84 & 0.80 \\
+~~~AIC & 482.91 & 197.37 & 296.71 & 641.71 & 437.26 & 628.15 \\
+~~~BIC & 536.46 & 250.93 & 350.26 & 695.27 & 490.81 & 681.70 \\ \hline
+\multicolumn{7}{p{6in}}{
+                1. Standard errors are Newey West heteroskedastic and autocorrelation robust.\newline
+                2. Null hypothesis: Coefficients on all fiscal uncertainty variables are equal to zero. Wald F-test $\sim$ F(5,195).\newline
+                3. Null hypothesis: All 1 lags of the given control variable have coefficients equal to zero. Wald F-test $\sim$ F(1,195).\newline
+                * Significant at 10\% level~~ ** Significant at 5\% level~~ *** Significant at 1\% level}
+\end{tabular}\end{center}}\end{table}

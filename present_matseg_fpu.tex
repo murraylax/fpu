@@ -1,0 +1,645 @@
+\documentclass{beamer}
+\usepackage{beamerthemeshadow}
+\usepackage{verbatim}
+\usepackage{grffile}
+
+\usepackage{lastpage}
+\usepackage{xcolor}
+\usepackage{pgf}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\be}{\begin{enumerate}}
+\newcommand{\ee}{\end{enumerate}}
+\newcommand{\bd}{\begin{description}}
+\newcommand{\ed}{\end{description}}
+\newcommand{\prbf}[1]{\textbf{#1}}
+\newcommand{\prit}[1]{\textit{#1}}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\bdm}{\begin{displaymath}}
+\newcommand{\edm}{\end{displaymath}}
+
+\newcommand{\ft}[1]{
+  \frametitle{\begin{tabular}{p{4.2in}r} \textcolor{white}{#1} & \small{\insertframenumber / \inserttotalframenumber} \end{tabular}}
+  \setbeamercovered{transparent=18}
+}
+
+\newcommand{\eft}[1]{
+  \frametitle{\begin{tabular}{p{4in}r} \textcolor{white}{#1} & \small{\hyperlink{f:questions}{\beamergotobutton{GO BACK}}} \end{tabular}}
+  \setbeamercovered{transparent=18}
+}
+
+\newcommand{\stepinv}{\setbeamercovered{invisible}}
+\newcommand{\stopinv}{\setbeamercovered{transparent=18}}
+\newcommand{\uncoverinv}[1]
+{
+  \setbeamercovered{invisible}
+  \uncover<+->{#1}
+  \setbeamercovered{transparent=18}
+}
+\newcommand{\ans}[1]{\textcolor{blue}{#1}}
+\newcommand{\ansinv}[1]
+{
+  \setbeamercovered{invisible}
+  \uncover<+->{\textcolor{blue}{#1}}
+  \setbeamercovered{transparent=18}
+}
+\newcommand{\setinv}{\setbeamercovered{invisible}}
+\newcommand{\setvis}{\setbeamercovered{transparent=18}}
+\newcommand{\centerpic}[2]
+{
+  \begin{center}
+  \includegraphics[#1]{#2}
+  \end{center}
+}
+\newcommand{\h}[1]{\hat{#1}}
+\newcommand{\ds}{\displaystyle}
+
+%\definecolor{light}{rgb}{1.0,0.33,0.33}
+\definecolor{light}{rgb}{1.0,0.5,0.5}
+\newcommand{\hl}[1]{\alt<#1>{\rowcolor{light}\hspace*{-2.1pt}} {\hspace*{-2.1pt}} }
+
+\definecolor{mycolor}{rgb}{0.6,0.0,0.0}
+\usecolortheme[named=mycolor]{structure}
+
+\title[2013 Midwest Applied Time Series Conference]{Expected Versus Unexpected Fiscal Policy Multipliers}
+\author[James Murray, University of Wisconsin - La Crosse]{
+James Murray\\
+Department of Economics\\
+University of Wisconsin - La Crosse
+}
+\date{Friday, June 7, 2013}
+
+\begin{document}
+
+\begin{comment}
+Look up John Nunley's message about fiscal policy using SVARs versus DSGE - it involves fiscal policy rules
+
+\end{comment}
+
+\frame{\titlepage \setcounter{framenumber}{0}}
+
+\section{}
+\subsection{Purpose}
+\frame
+{
+  \ft{Purpose}
+  \bi
+  \item Estimate the impact of predicted versus unexpected fiscal policy.
+  \item Contribute to an unsettled fiscal multiplier literature using SVARs.
+    \bi
+    \item Size of the multiplier, statistical significance, impact on spending components
+    \item Identification strategy
+    \item Hebous (\textit{Journal of Economic Surveys}, 2007) 
+    \ei
+  \item Least-squares adaptive expectations.
+    \bi
+    \item Surveys: Evans and Honkapohja (2008, 2010) 
+    \item Fiscal multipliers with adaptive expectations: Mitra, Evans and Honkapohja (2012).
+    \ei
+  \ei
+}
+\subsection{Outline}
+\frame
+{
+  \ft{Outline}
+  \be
+  \item Baseline model (SVAR): estimate the impact of fiscal policy on macro outcomes.
+  \item Fiscal policy uncertainty
+    \bi
+    \item Expectations framework
+    \item Decompose actual fiscal policy into expected and unexpected components.
+    \ei
+  \item Extended model (SVAR): estimate the impact on macro outcomes for
+    \bi
+    \item Expectations for fiscal policy (predicted value)
+    \item Unexpected fiscal policy (residual)
+    \ei
+  \ee
+}
+
+\section{Baseline Model}
+\subsection{Structural Vector Autoregression}
+\frame
+{
+  \ft{Baseline Structural VAR}
+  \bi
+  \item Baseline model:
+    \bdm A_0 x_t = \alpha_0 + \alpha_1 t + A(L) x_t + z_t, \edm
+  \item Includes a constant and a linear trend.
+  \item Endogenous vector:
+    \bdm x_t = \left[ \begin{array}{c} y_t \\ c_t \\ i_t \\ u_t \\ t_t \\ g_t \end{array} \right] 
+         = \left[ \begin{array}{c} \mbox{Real GDP per capita} \\ \mbox{Consumption per capita} \\ \mbox{Investment per capita} \\ 
+             \mbox{Unemployment Rate} \\ \mbox{Taxes net of transfers per capita} \\ \mbox{Government consumption per capita} \end{array} \right] \edm
+  \item $A_0$ captures contemporaneous causal relationships
+    \bi
+    \item Identified with zero-restrictions on contemporaneous relationships.
+    \ei
+  \ei
+}
+
+\subsection{Identification Strategy}
+\begin{comment}
+\frame
+{
+  \ft{Identification Strategy}
+    \bi
+    \item Implementation lag for government spending: $g_t$ does not contemporaneously respond to anything.
+    \item Taxes do contemporaneously respond to real GDP, unemployment, government spending decisions.
+    \item Taxes do not contemporaneously respond to consumption or investment.
+    \item Taxes directly affect consumption and investment decisions.
+    \item Taxes do not directly affect real GDP, only indirectly through its components.
+    \item Real GDP contemporaneously determined by its components: $c_t$, $i_t$, and $g_t$.
+    \item Labor market frictions prevent unemployment from contemporaneously responding to anything.
+    \ei
+}
+
+\frame
+{
+  \ft{Identification Strategy}
+These restrictions leads to the following structure:
+\begin{footnotesize}
+\bdm \label{eq:svar} \left[ \begin{array}{cccccc} 
+     1 & a_{y,c} & a_{y,i} & a_{y,u} & 0 & a_{y,g} \\
+     0 & 1 & 0 & a_{c,u} & a_{c,t} & a_{g,t} \\ 
+     0 & 0 & 1 & a_{i,u} & a_{i,t} & a_{g,t} \\
+     0 & 0 & 0 & 1 & 0 & 0 \\
+     a_{t,y} & 0 & 0 & a_{t,u} & 1 & a_{t,g} \\
+     0 & 0 & 0 & 0 & 0 & 1 \\ \end{array} \right]~ 
+     \left[ \begin{array}{c} y_t \\ c_t \\ i_t \\ u_t \\ t_t \\ g_t \end{array} \right]  = 
+     A(L) \left[ \begin{array}{c} y_{t-1} \\ c_{t-1} \\ i_{t-1} \\ u_{t-1} \\ t_{t-1} \\ g_{t-1} \end{array} \right] +
+     \left[ \begin{array}{c} z_{y,t} \\ z_{c,t} \\ z_{i,t} \\ z_{u,t} \\ z_{t,t} \\ z_{g,t} \end{array} \right],
+\edm
+\end{footnotesize}
+\bi
+\item $A(L)$: first-order distributed lag.
+\item $z_{k,t}$: independently and identically distributed shocks.
+\item Measure fiscal policy impacts: impulse responses functions of macro outcomes to innovations to taxes ($z_{t,t}$) and government spending ($z_{g,t}$).
+\ei
+}
+\end{comment}
+
+\frame
+{
+  \ft{Identification Strategy}
+    \bi
+    \item Implementation lag for government spending: $g_t$ does not contemporaneously respond to anything.
+    \item Taxes contemporaneously respond to everything: real GDP, consumption, investment, unemployment, government expenditures.
+    \item Consumption contemporaneously responds to taxes, government expenditures, real GDP, and unemployment.
+    \item Investment contemporaneously responds to taxes, government expenditures, and real GDP.
+    \item Real GDP contemporaneously determined by its components: $c_t$, $i_t$, and $g_t$.
+    \item Labor market frictions prevent unemployment from contemporaneously responding to anything.
+    \ei
+}
+
+\frame
+{
+  \ft{Identification Strategy}
+These restrictions leads to the following structure:
+\begin{footnotesize}
+\bdm \label{eq:svar} \left[ \begin{array}{cccccc} 
+     1 & a_{y,c} & a_{y,i} & 0 & 0 & a_{y,g} \\
+     a_{c,y} & 1 & 0 & a_{c,u} & a_{c,t} & a_{c,g} \\ 
+     a_{i,y} & 0 & 1 & 0 & a_{i,t} & a_{i,g} \\
+     0 & 0 & 0 & 1 & 0 & 0 \\
+     a_{t,y} & a_{t,c} & a_{t,i} & a_{t,u} & 1 & a_{t,g} \\
+     0 & 0 & 0 & 0 & 0 & 1 \\ \end{array} \right]~ 
+     \left[ \begin{array}{c} y_t \\ c_t \\ i_t \\ u_t \\ t_t \\ g_t \end{array} \right]  = 
+     A(L) \left[ \begin{array}{c} y_{t-1} \\ c_{t-1} \\ i_{t-1} \\ u_{t-1} \\ t_{t-1} \\ g_{t-1} \end{array} \right] +
+     \left[ \begin{array}{c} z_{y,t} \\ z_{c,t} \\ z_{i,t} \\ z_{u,t} \\ z_{t,t} \\ z_{g,t} \end{array} \right],
+\edm
+\end{footnotesize}
+\bi
+\item $A(L)$: first-order distributed lag.
+\item $z_{k,t}$: independently and identically distributed shocks to endogenous variables.
+\item Fiscal policy responses: IRFs of macro outcomes to taxes ($z_{t,t}$) and government expenditures ($z_{g,t}$).
+\ei
+}
+
+\subsection{Impulse Response Functions}
+
+\frame
+{
+  \ft{Fiscal Policy Responses to Own Shocks}
+  \begin{tabular}{p{2in}p{2in}}
+    \includegraphics[width=2in, height=2in]{pics/irf_sh_GovExpenditures_var_GovExpenditures.png} & \includegraphics[width=2in, height=2in]{pics/irf_sh_Taxes_var_Taxes.png} \\
+    \begin{center}Government expenditures shock is very persistent\end{center} & \begin{center}Taxes? Problem with Identification Scheme?\end{center} \\
+  \end{tabular}
+}
+
+\frame
+{
+  \ft{Impulse Response: Shock to Government Spending}
+  \begin{tabular}{cc}
+    \includegraphics[width=2in, height=1.5in]{pics/irf_sh_GovExpenditures_var_Consumption.png} & \includegraphics[width=2in, height=1.5in]{pics/irf_sh_GovExpenditures_var_Investment.png} \\
+    \includegraphics[width=2in, height=1.5in]{pics/irf_sh_GovExpenditures_var_GDP.png} & \includegraphics[width=2in, height=1.5in]{pics/irf_sh_GovExpenditures_var_Unemployment.png} 
+  \end{tabular}
+}
+
+\frame
+{
+  \ft{Impulse Response: Shock to Taxes}
+  \begin{tabular}{cc}
+    \includegraphics[width=2in, height=1.5in]{pics/irf_sh_Taxes_var_Consumption.png} & \includegraphics[width=2in, height=1.5in]{pics/irf_sh_Taxes_var_Investment.png} \\
+    \includegraphics[width=2in, height=1.5in]{pics/irf_sh_Taxes_var_GDP.png} & \includegraphics[width=2in, height=1.5in]{pics/irf_sh_Taxes_var_Unemployment.png} 
+  \end{tabular}
+}
+
+\frame
+{
+  \ft{Fiscal Policy Multiplier}
+  Cumulative multiplier for each period after the shock.
+  \bdm \mbox{Multiplier}_T~ \equiv~ m_T~ = ~\frac{\displaystyle \sum_{\tau=0}^{T} y_{\tau}^{resp}}{\displaystyle \sum_{\tau=0}^{T} f_{\tau}^{resp}} \edm
+  \bi
+  \item $y_{T}^{resp}$ is the response of real GDP, $T$ periods after the initial shock.
+  \item $f_{T}^{resp}$ is the response of the fiscal policy variable, $g_T$ and $t_T$ in turn.
+  \ei
+}
+
+\frame
+{
+  \ft{Fiscal Policy Multipliers}
+  \begin{tabular}{p{2in}p{2in}}
+    \includegraphics[width=2in, height=2in]{pics/Mult_GovExpenditures.png} & \includegraphics[width=2in, height=2in]{pics/Mult_Taxes.png} \\
+    \begin{center}Government consumption multiplier is very close to zero\end{center} & \begin{center}Tax multiplier has the opposite sign than expected.\end{center} \\ 
+  \end{tabular}
+}
+
+\section{Fiscal Policy Uncertainty}
+\subsection{Boundedly Rational Expectations}
+
+\frame
+{
+  \ft{Knowledge of Fiscal Policy}
+  \bi
+  \item Market participants' set of knowledge at any point in the sample period, is not equal to my estimated SVAR from June 2013.
+  \item Market participants are less informed:
+    \bi
+    \item Knowledge of the nature of fiscal policy at time $t$ depends on data \textit{prior} to $t$. 
+    \ei
+  \item Might be more informed:
+    \bi
+    \item Structural change not captured by my SVAR, agents at time $t$ have a better perception of their structure, using data near $t$.
+    \item Announcements or news of economic events (not in this paper though).
+    \ei
+  \item Might have misconceptions:
+    \bi
+    \item Past data may be a poor guide to upcoming policy.
+    \ei
+  \ei
+}
+
+\frame
+{
+  \ft{Fiscal Policy Uncertainty}
+  \bi
+  \item Exact conduct of fiscal policy decisions is unknown.
+  \item Boundedly rational: agents expect tax and government spending decisions respond to:
+    \bi
+    \item Macroeconomic variables: Unemployment, real GDP.
+    \item Fiscal variables: own lag, debt.
+    \ei
+  \item Agents use least-squares regression models to forecast fiscal variables.
+  \item Expectations are adaptive:
+    \bi
+    \item Agents re-estimate a regression model every quarter, updating their information set with new observation from the previous quarter.
+    \item Agents put more weight on more recent observations: Constant gain, weighted least-squares forecast.
+    \ei
+  \ei
+}
+
+\frame
+{
+  \ft{Motivation for Least-Squares Learning}
+  \bi
+  \item Taxes and transfers: respond contemporaneously to economic conditions.
+  \item Government spending: 
+    \bi
+    \item Even announcements could be subject to legislative adjustments or reversals.
+    \item Stimulus policies are complicated mixtures of taxes, transfers, and spending.
+    \item Stimulus policies involve complicated implementation lags.
+    \item Forecast is for the national entire portfolio of federal, state, and local spending.
+    \ei
+  \item Cognitive consistency principle (Evans and Honkapohja, 2010)
+  \ei
+}
+
+\subsection{Fiscal Policy Rules}
+\frame
+{
+  \ft{Fiscal Policy Rules}
+  \begin{block}{Fiscal policy forecasting models}
+  \vspace*{-1pc}\bdm \begin{array}{c} \label{eq:fiscalrule}
+  g_t = \alpha_0 + \rho_g g_{t-1} + \alpha_y(L) y_t + \alpha_u(L) u_t + \alpha_d d_{t-1} + \epsilon_{g,t} \\ [0.5pc] 
+  t_t = \beta_0 + \rho_t t_{t-1} + \beta_u(L) y_t + \beta_u(L) u_t + \beta_d d_{t-1} + \epsilon_{t,t},
+  \end{array} \edm
+  \end{block}
+  \begin{block}{Notation}
+  \begin{columns}[t]
+    \column{1.7in}
+    \bi
+    \item $g_t$: Gov spending
+    \item $t_t$: Net taxes 
+    \item $y_t$: Real GDP
+    \item $u_t$: Unemployment
+    \item $d_t$: Government debt
+    \ei
+    \column{1.9in}
+    \bi
+    \item $\alpha_0$, $\beta_0$: constant terms
+    \item $\rho_g$, $\rho_t$: persistence
+    \item $\alpha_d$, $\beta_d$: response to debt
+    \item $\alpha_y(L)$, $\alpha_u(L)$:\newline 2nd order distributed lag polynomials.
+    \ei
+    \end{columns}
+  \end{block}
+}
+
+\frame
+{
+  \ft{Least-Squares Learning}
+  \begin{scriptsize}
+  \begin{block}{OLS Regression}
+    Time $t$ estimates of the regression coefficients:
+    \vspace*{-1pc}\bdm \hat{\Phi}_t = \left(\sum_{\tau=0}^{t} X_{\tau} X_{\tau}' \right)^{-1} \left(\sum_{\tau=0}^{t} X_{\tau}' f_{\tau} \right) \edm
+    \vspace*{-1pc}\bi
+    \item $f_{\tau} \in \{g_\tau, t_\tau\}$ is fiscal policy policy variable.
+    \item $X_{\tau}$ is the vector of explanatory variables in the regression equation (per-determined at $\tau$).
+    \item Predicted fiscal policy: $\hat{f}_t = X_t' \hat{\Phi}_{t-1}$
+    \item Unexpected policy: $\hat{\epsilon}_{f,t} = f_t - X_t' \hat{\Phi}_{t-1}$
+    \ei
+  \end{block}
+
+  \begin{block}{Recursive Formulation}
+  The OLS regression coefficients can be rewritten as:
+     \vspace*{-0.5pc}\bdm \begin{array}{c}
+      R_t = R_{t-1} + \gamma_{t} (X_t X_t' - R_{t-1}), \\ [0.5pc]
+      \hat{\Phi}_t = \Phi_{t-1} + \gamma_{t} R_t^{-1} X_t (f_t - X_t' \hat{\Phi}_{t-1})    \vspace*{-0.5pc}
+    \end{array}\edm
+   where $\gamma_{t} = 1/t$ is the \textbf{learning gain}.
+  \end{block}
+  \end{scriptsize}
+}
+
+\subsection{Constant Gain Learning}
+\frame
+{
+  \ft{Constant Gain Learning}
+  \begin{block}{Constant gain framework}
+    \bi
+    \item Replace $\gamma_t$ with a constant, $\gamma \in (0,1)$.
+    \item Weighted least squares - more recent observations have more weight.
+    \ei
+  \end{block}
+
+  \begin{block}{Ideal situations for constant gain learning}
+    \bi
+    \item Precedence of structural changes.
+    \item No a-priori knowledge on menu of structural changes and probability distributions.
+    \item Reasonable that learning dynamics should not disappear with time.
+    \ei
+  \end{block}
+}
+
+\frame
+{
+  \ft{Constant-Gain Learning}
+  \begin{footnotesize}
+  \begin{block}{Constant Gain Recursive Formulation}
+    \bdm \begin{array}{c}
+      R_t = R_{t-1} + \gamma (X_t X_t' - R_{t-1}), \\ [0.5pc]
+      \hat{\Phi}_t = \Phi_{t-1} + \gamma R_t^{-1} X_t (f_t - X_t' \hat{\Phi}_{t-1}) 
+    \end{array}\edm
+    \bi
+    \item Learning gain, $\gamma \in (0,1)$, is constant, related to the weight assigned to most recent observation.
+    \item Typical estimates for $\gamma \sim 0.02$ (Milani (2008), Slobodyan and Wouters (2008)).
+    \ei
+  \end{block}
+
+  \begin{block}{Standard Formulation}
+    \bdm \hat{\Phi}_t = \left( (1-\gamma)  \sum_{\tau=1}^{t} \gamma^{\tau} X_{t-\tau} X_{t-\tau}' \right)^{-1}  \left( (1-\gamma)  \sum_{\tau=1}^{t} \gamma^{\tau} X_{t-\tau}  f_{t-\tau} \right). \edm
+    Weight on $t-\tau$ observation declines geometrically with $\tau$: $\omega_\tau = (1-\gamma) \gamma^{\tau}$.
+  \end{block}
+  \end{footnotesize}
+}
+
+\subsection{Evolution of Expectations}
+\frame
+{
+  \ft{Dependent variable: Government Consumption}
+  \begin{center}\textbf{Evolution of Coefficients}\end{center}
+  \vspace*{1pc}
+  \begin{tabular}{cc}
+    \includegraphics[width=2in, height=1.6in]{pics/coef_govcons_gdp.png} & \includegraphics[width=2in, height=1.6in]{pics/coef_govcons_debt.png} \\
+    Real GDP & Government Debt \\
+    \scriptsize{(Expect: Negative)} & \scriptsize{(Expect: Negative)} \\
+  \end{tabular}
+}
+
+\frame
+{
+  \ft{Dependent variable: Government Consumption}
+  \begin{center}\textbf{Evolution of Coefficients}\end{center}
+  \vspace*{1pc}
+  \begin{tabular}{cc}
+     \includegraphics[width=2in, height=1.6in]{pics/coef_govcons_unemployment.png} & \includegraphics[width=2in, height=1.6in]{pics/coef_govcons_lag.png} \\
+    Unemployment & Own Lag \\ 
+    \scriptsize{(Expect: Positive)} & \scriptsize{(Expect: Between 0 and 1)} \\
+  \end{tabular}
+}
+
+\frame
+{
+  \ft{Dependent variable: Government Consumption}
+  \begin{center}\textbf{Predicted and Unexpected Government Consumption}\end{center}
+  \vspace*{1pc}
+  \begin{tabular}{cc}
+     \includegraphics[width=2in, height=1.6in]{pics/govcons.png} & \includegraphics[width=2in, height=1.6in]{pics/unexp_govcons.png} \\
+  \end{tabular}
+}
+
+\frame
+{
+  \ft{Dependent variable: Taxes}
+  \begin{center}\textbf{Evolution of Coefficients}\end{center}
+  \vspace*{1pc}
+  \begin{tabular}{cc}
+    \includegraphics[width=2in, height=1.6in]{pics/coef_tax_gdp.png} & \includegraphics[width=2in, height=1.6in]{pics/coef_tax_debt.png} \\
+    Real GDP & Government Debt \\
+    \scriptsize{(Expect: Positive)} & \scriptsize{(Expect: Positive)} \\
+  \end{tabular}
+}
+
+\frame
+{
+  \ft{Dependent variable: Taxes}
+  \begin{center}\textbf{Evolution of Coefficients}\end{center}
+  \vspace*{1pc}
+  \begin{tabular}{cc}
+     \includegraphics[width=2in, height=1.6in]{pics/coef_tax_unemployment.png} & \includegraphics[width=2in, height=1.6in]{pics/coef_tax_lag.png} \\
+    Unemployment & Own Lag \\ 
+    \scriptsize{(Expect: Negative)} & \scriptsize{(Expect: Between 0 and 1)} \\
+  \end{tabular}
+}
+
+\frame
+{
+  \ft{Dependent variable: Taxes}
+  \begin{center}\textbf{Predicted and Unexpected Taxes Net of Transfers}\end{center}
+  \vspace*{1pc}
+  \begin{tabular}{cc}
+     \includegraphics[width=2in, height=1.6in]{pics/taxrev.png} & \includegraphics[width=2in, height=1.6in]{pics/unexp_tax.png} \\
+  \end{tabular}
+}
+
+
+\section{Model with Expected and Unexpected Fiscal Policy}
+\subsection{Structural VAR}
+\frame
+{
+  \ft{Extended Structural VAR}
+  \bi
+  \item Model:
+    \bdm A_0 x_t = A(L) x_t + z_t, \edm
+  \item Endogenous vector:
+    \bdm x_t = \left[ \begin{array}{c} y_t \\ c_t \\ i_t \\ u_t \\ \hat{\epsilon}_{t,t} \\ \hat{\epsilon}_{g,t} \\ \hat{t}_t \\ \hat{g}_t \end{array} \right] 
+         = \left[ \begin{array}{c} \mbox{Real GDP} \\ \mbox{Consumption} \\ \mbox{Investment} \\ 
+             \mbox{Unemployment Rate} \\ \mbox{Unexpected Net Taxes} \\ \mbox{Unexpected Government Spending} \\
+             \mbox{Expected Net Taxes} \\ \mbox{Expected Government Spending}\end{array} \right] \edm
+  \ei
+}
+
+\subsection{Identification Strategy}
+\frame
+{
+  \ft{Identification Restrictions}
+  \bi
+  \item Similar to above: treat unexpected fiscal policies in the same manner as fiscal policy in the baseline.
+  \item Expectations of fiscal policy in the current period are predetermined.
+    \bi
+    \item Nothing contemporaneously affects expected fiscal policy.
+    \item Expected fiscal policy may contemporaneously affect consumption, investment, unemployment, unexpected fiscal policy.
+    \ei
+  \ei
+}
+
+\frame
+{
+  \ft{Identification Strategy}
+Structural VAR with identification restrictions:
+\begin{tiny}
+\bdm \label{eq:svar} \left[ \begin{array}{cccccccc} 
+     1 & a_{y,c} & a_{y,i} & 0 & 0 & a_{y,g} & 0 & a_{y,g}^e \\
+     0 & 1 & 0 & a_{c,u} & a_{c,t} & a_{c,g} & a_{c,t}^e & a_{c,g}^e \\ 
+     a_{i,y} & 0 & 1 & 0 & a_{i,t} & a_{i,g} & a_{i,t}^e & a_{i,g}^e \\
+     0 & 0 & 0 & 1 & 0 & 0 & a_{u,t}^e & a_{u,g}^e \\
+     a_{t,y} & a_{t,c} & a_{t,i} & a_{t,u} & 1 & a_{t,g} & a_{t,t}^e & a_{t,g}^e \\
+     0 & 0 & 0 & 0 & 0 & 1 & a_{g,t}^e & a_{g,g}^e \\ 
+     0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+     0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\ \end{array} \right]~ 
+     \left[ \begin{array}{c} y_t \\ c_t \\ i_t \\ u_t \\ \hat{\epsilon}_{t,t} \\ \hat{\epsilon}_{g,t} \\ \hat{t}_t \\ \hat{g}_t \end{array} \right]  = 
+     A(L) \left[ \begin{array}{c} y_{t-1} \\ c_{t-1} \\ i_{t-1} \\ u_{t-1} \\ \hat{\epsilon}_{t,t-1} \\ \hat{\epsilon}_{g,t-1} \\ \hat{t}_{t-1} \\ \hat{g}_t  \end{array} \right] +
+     \left[ \begin{array}{c} z_{y,t} \\ z_{c,t} \\ z_{i,t} \\ z_{u,t} \\ z_{t,t}^\epsilon \\ z_{g,t}^\epsilon \\ z_{\hat{t},t} \\ z_{\hat{g},t} \end{array} \right]
+\edm
+\end{tiny}
+Impulse response functions to measure the impact of fiscal policy: 
+  \bi
+  \item Expected fiscal policy: innovations to $z_{\hat{t},t}$ and $z_{\hat{g},t}$.
+  \item Unexpected fiscal policy: innovations to $z_{t,t}^\epsilon$ and $z_{g,t}^\epsilon$
+  \ei
+}
+
+
+\subsection{Impulse Response Functions}
+\frame
+{
+  \ft{Fiscal Policy Responses to Own Shocks}
+  \begin{tabular}{cc}
+    \textbf{Expected Gov Expenditures} & \textbf{Unexpected Gov Expenditures} \\
+    \includegraphics[width=2in, height=1.1in]{pics/irf_sh_Predicted\space Government\space Expenditures_var_Predicted\space Government\space Expenditures.png} & \includegraphics[width=2in, height=1.1in]{pics/irf_sh_Unexpected\space Government\space Expenditures_var_Unexpected\space Government\space Expenditures.png} \\
+    \textbf{Expected Taxes} & \textbf{Unexpected Taxes} \\
+    \includegraphics[width=2in, height=1.1in]{pics/irf_sh_Predicted\space Taxes_var_Predicted\space Taxes.png} & \includegraphics[width=2in, height=1.1in]{pics/irf_sh_Unexpected\space Taxes_var_Unexpected\space Taxes.png} 
+  \end{tabular}
+}
+
+\frame
+{
+  \ft{Impulse Response: Government Expenditures}
+  \begin{tabular}{cc}
+    \textbf{Expected Gov Expenditures} & \textbf{Unexpected Gov Expenditures} \\
+    \includegraphics[width=2in, height=1.3in]{pics/irf_sh_Predicted\space Government\space Expenditures_var_Consumption.png} & \includegraphics[width=2in, height=1.3in]{pics/irf_sh_Unexpected\space Government\space Expenditures_var_Consumption.png} \\
+    \includegraphics[width=2in, height=1.3in]{pics/irf_sh_Predicted\space Government\space Expenditures_var_GDP.png} & \includegraphics[width=2in, height=1.3in]{pics/irf_sh_Unexpected\space Government\space Expenditures_var_GDP.png} 
+  \end{tabular}
+}
+
+\frame
+{
+  \ft{Impulse Response: Net Taxes}
+  \begin{tabular}{cc}
+    \textbf{Expected Net Taxes} & \textbf{Unexpected Net Taxes} \\
+    \includegraphics[width=2in, height=1.3in]{pics/irf_sh_Predicted\space Taxes_var_Consumption.png} & \includegraphics[width=2in, height=1.3in]{pics/irf_sh_Unexpected\space Taxes_var_Consumption.png} \\
+    \includegraphics[width=2in, height=1.3in]{pics/irf_sh_Predicted\space Taxes_var_GDP.png} & \includegraphics[width=2in, height=1.3in]{pics/irf_sh_Unexpected\space Taxes_var_GDP.png} 
+  \end{tabular}
+}
+
+\frame
+{
+  \ft{Fiscal Policy Multipliers}
+
+  \bdm \mbox{Multiplier}_{T} = \frac{\displaystyle \sum_{\tau=0}^{T} y_{\tau}^{resp}}{\displaystyle \sum_{\tau=0}^{T} \hat{f}_{\tau}^{resp} + \hat{\epsilon}_{f,\tau}^{resp}} \edm
+
+  \bi
+  \item $y_{T}^{resp}$ is the response of real GDP, $T$ periods after the initial shock.
+  \item $\hat{f}_{T}^{resp}$ is the response of the predicted fiscal policy variable, $\hat{g}_T$ and $\hat{t}_T$, in turn.
+  \item $\hat{\epsilon}_{f,\tau}^{resp}$ is the response of the unexpected (residual) fiscal policy variable, $\hat{\epsilon}_{g,T}$ and $\hat{\epsilon}_{t,T}$, in turn.
+  \ei
+}
+
+\frame
+{
+  \ft{Fiscal Policy Multipliers}
+  \begin{tabular}{p{2in}p{2in}}
+    \includegraphics[width=2in, height=2in]{pics/Mult_GovExpenditures_both.png} & \includegraphics[width=2in, height=2in]{pics/Mult_Taxes_both.png} \\
+    \begin{center}Expected fiscal policy multiplier is larger in longer horizons\end{center} & \begin{center}Something's wrong.\end{center} \\ 
+  \end{tabular}
+}
+
+\section{}
+\subsection{Closing Remarks}
+\frame
+{
+  \ft{Conclusions for Fiscal Policy}
+  \bi
+  \item Government spending: 
+    \bi
+    \item Timing of the response different for shocks to expected versus unexpected policy.
+    \item Consumption responses to expected fiscal policy are statistically significant.
+    \item Consumption responses to unexpected fiscal policy are not statistically significant.
+    \item Expected fiscal policy multiplier is larger in longer horizons.
+    \ei
+  \item Taxes:
+    \bi
+    \item Responses to unexpected shocks similar to baseline model tax shocks.
+    \item Unexpected tax shocks are muted - net taxes are an automatic stabilizer.
+    \ei
+  \ei
+}
+
+\frame
+{
+  \ft{Moving Forward}
+  \bi
+  \item Sign restrictions identification strategy (Mountford and Uhlig, 2009).
+  \item Minimal assumptions to identify minimal shocks:
+    \bi
+    \item Business cycle or monetary shock: increase output, consumption, and investment; decrease unemployment.
+    \item Fiscal policy shock: fiscal policy variable increases, shock is orthogonal to shock above.
+    \ei
+  \ei
+}
+
+\end{document}
+
